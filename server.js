@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const path = require('path');
 require('dotenv').config();
-const {_readdir} = require('fs');
+const fs = require('fs');
 
 
 /* Variable Declarations */
@@ -23,16 +23,18 @@ app.set('views', [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'src/v
 const routes = require('./src/routes/admin/user.routes');
 app.use('/', routes);
 
-const apiFiles = await _readdir(`./src/routes/${apiFolderName}`);
-apiFiles.forEach(file => {
-	if (!file && file[0] == '.') return;
-	app.use(`/${apiFolderName}`, require(join(__dirname, file)));
-});
-const adminFiles = await _readdir(`./src/routes/${adminFolderName}`);
-adminFiles.forEach(file => {
-	if (!file && file[0] == '.') return;
-	app.use(`/${adminFolderName}`, require(join(__dirname, file)));
-});
+(async function() {
+	const apiFiles = fs.readdirSync(`./src/routes/${apiFolderName}`);
+	// apiFiles.forEach(file => {
+	// 	if (!file && file[0] == '.') return;
+	// 	app.use(`/${apiFolderName}`, require(path.join(`./src/routes/${apiFolderName}`, file)));
+	// });
+	const adminFiles = fs.readdirSync(`./src/routes/${adminFolderName}`);
+	adminFiles.forEach(file => {
+		if (!file && file[0] == '.') return;
+		app.use(`/${adminFolderName}`, require(path.join(__dirname,`./src/routes/${adminFolderName}`, file)));
+	});
+})()
 
 
 require('./config/db')();
