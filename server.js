@@ -24,7 +24,7 @@ const routes = require('./src/routes/admin/user.routes');
 app.use('/', routes);
 
 (async function() {
-	const apiFiles = fs.readdirSync(`./src/routes/${apiFolderName}`);
+	// const apiFiles = fs.readdirSync(`./src/routes/${apiFolderName}`);
 	// apiFiles.forEach(file => {
 	// 	if (!file && file[0] == '.') return;
 	// 	app.use(`/${apiFolderName}`, require(path.join(`./src/routes/${apiFolderName}`, file)));
